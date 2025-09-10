@@ -1,0 +1,89 @@
+@page "/"
+
+<div class="row">
+    <div class="col-12">
+        <div class="jumbotron bg-primary text-white p-5 rounded mb-4">
+            <h1 class="display-4">
+                <i class="bi bi-file-earmark-text"></i>
+                欢迎使用文章管理系统
+            </h1>
+            <p class="lead">基于 ASP.NET Core 8 和 Blazor Server 构建的现代化文章管理平台</p>
+            <hr class="my-4">
+            <p>您可以浏览、创建和管理文章，体验流畅的用户交互。</p>
+            <a class="btn btn-light btn-lg me-3" href="/articles" role="button">
+                <i class="bi bi-list-ul"></i>
+                查看文章列表
+            </a>
+            <a class="btn btn-outline-light" href="/articles/create" role="button">
+                <i class="bi bi-plus-circle"></i>
+                创建新文章
+            </a>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-file-earmark-plus text-primary" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">创建文章</h5>
+                        <p class="card-text">快速创建新文章，支持富文本内容编辑。</p>
+                        <a href="/articles/create" class="btn btn-primary">开始创建</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-list-ul text-success" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">文章管理</h5>
+                        <p class="card-text">查看、编辑和管理您的所有文章。</p>
+                        <a href="/articles" class="btn btn-success">管理文章</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-gear text-info" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">API 文档</h5>
+                        <p class="card-text">查看完整的 RESTful API 文档和测试接口。</p>
+                        <a href="/swagger" class="btn btn-info">查看 API</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row mt-4">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h5>
+                            <i class="bi bi-star"></i>
+                            功能特性
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>完整的文章 CRUD 操作</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>响应式设计，支持移动端</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>实时表单验证</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>美观的用户界面</li>
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <ul class="list-unstyled">
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>RESTful API 支持</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>Entity Framework Core 数据存储</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>Swagger API 文档</li>
+                                    <li><i class="bi bi-check-circle text-success me-2"></i>模块化架构设计</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,38 @@
+### 获取所有文章
+GET https://localhost:5001/api/articles
+Accept: application/json
+
+###
+
+### 获取单个文章
+GET https://localhost:5001/api/articles/1
+Accept: application/json
+
+###
+
+### 创建新文章
+POST https://localhost:5001/api/articles
+Content-Type: application/json
+
+{
+  "title": "我的第一篇文章",
+  "content": "这是文章的内容部分，可以包含任何文本信息。"
+}
+
+###
+
+### 更新文章
+PUT https://localhost:5001/api/articles/1
+Content-Type: application/json
+
+{
+  "title": "更新后的文章标题",
+  "content": "这是更新后的文章内容。"
+}
+
+###
+
+### 删除文章
+DELETE https://localhost:5001/api/articles/1
+
+###

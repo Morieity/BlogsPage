@@ -2,9 +2,6 @@
 bin/
 obj/
 out/
-*.dll
-*.exe
-*.pdb
 *.cache
 *.user
 *.suo

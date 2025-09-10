@@ -1,0 +1,188 @@
+@page "/articles"
+@inject ArticleService ArticleService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h3>
+        <i class="bi bi-file-earmark-text"></i>
+        文章管理
+    </h3>
+    <a href="/articles/create" class="btn btn-primary">
+        <i class="bi bi-plus-circle"></i>
+        新建文章
+    </a>
+</div>
+
+@if (isLoading)
+{
+    <div class="text-center">
+        <div class="spinner-border" role="status">
+            <span class="visually-hidden">正在加载...</span>
+        </div>
+        <p class="mt-2"><em>正在加载文章...</em></p>
+    </div>
+}
+else if (articles == null || !articles.Any())
+{
+    <div class="alert alert-info text-center">
+        <i class="bi bi-info-circle"></i>
+        暂无文章，<a href="/articles/create" class="alert-link">点击创建第一篇文章</a>
+    </div>
+}
+else
+{
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>标题</th>
+                            <th>内容摘要</th>
+                            <th>创建时间</th>
+                            <th>操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var article in articles)
+                        {
+                            <tr>
+                                <td>@article.Id</td>
+                                <td>@article.Title</td>
+                                <td>
+                                    @if (!string.IsNullOrEmpty(article.Content))
+                                    {
+                                        @(article.Content.Length > 50 ? article.Content.Substring(0, 50) + "..." : article.Content)
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">无内容</span>
+                                    }
+                                </td>
+                                <td>@article.CreatedAt.ToString("yyyy-MM-dd HH:mm")</td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="/articles/@article.Id" class="btn btn-outline-primary btn-sm" title="查看详情">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                        <a href="/articles/edit/@article.Id" class="btn btn-outline-warning btn-sm" title="编辑">
+                                            <i class="bi bi-pencil"></i>
+                                        </a>
+                                        <button class="btn btn-outline-danger btn-sm" title="删除" @onclick="() => ConfirmDelete(article)">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+}
+
+@if (showDeleteModal)
+{
+    <div class="modal fade show d-block" tabindex="-1" style="background-color: rgba(0,0,0,0.5);">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">确认删除</h5>
+                    <button type="button" class="btn-close" @onclick="CloseDeleteModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>确定要删除文章 "<strong>@articleToDelete?.Title</strong>" 吗？</p>
+                    <p class="text-muted">此操作不可撤销。</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CloseDeleteModal">取消</button>
+                    <button type="button" class="btn btn-danger" @onclick="DeleteArticle" disabled="@isDeleting">
+                        @if (isDeleting)
+                        {
+                            <span class="spinner-border spinner-border-sm me-2"></span>
+                        }
+                        删除
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private List<ArticleDto>? articles;
+    private bool isLoading = true;
+    private bool showDeleteModal = false;
+    private bool isDeleting = false;
+    private ArticleDto? articleToDelete;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadArticles();
+    }
+
+    private async Task LoadArticles()
+    {
+        try
+        {
+            isLoading = true;
+            articles = await ArticleService.GetArticlesAsync();
+        }
+        catch (Exception ex)
+        {
+            // 处理错误
+            Console.WriteLine($"加载文章列表时出错: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", "加载文章列表失败，请稍后重试。");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private void ConfirmDelete(ArticleDto article)
+    {
+        articleToDelete = article;
+        showDeleteModal = true;
+    }
+
+    private void CloseDeleteModal()
+    {
+        showDeleteModal = false;
+        articleToDelete = null;
+    }
+
+    private async Task DeleteArticle()
+    {
+        if (articleToDelete == null) return;
+
+        try
+        {
+            isDeleting = true;
+            var success = await ArticleService.DeleteArticleAsync(articleToDelete.Id);
+            
+            if (success)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "文章删除成功！");
+                await LoadArticles(); // 重新加载列表
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "删除失败，请稍后重试。");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"删除文章时出错: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", "删除失败，请稍后重试。");
+        }
+        finally
+        {
+            isDeleting = false;
+            CloseDeleteModal();
+        }
+    }
+}

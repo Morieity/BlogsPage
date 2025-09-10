@@ -1,0 +1,12 @@
+# .dockerignore
+bin/
+obj/
+.git/
+.gitignore
+.vs/
+.vscode/
+*.md
+Dockerfile
+docker-compose.yml
+deploy.sh
+deploy.bat

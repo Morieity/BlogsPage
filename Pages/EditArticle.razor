@@ -1,0 +1,147 @@
+@page "/articles/edit/{id:int}"
+@inject ArticleService ArticleService
+@inject NavigationManager Navigation
+@inject IJSRuntime JSRuntime
+
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        @if (isLoading)
+        {
+            <div class="text-center">
+                <div class="spinner-border" role="status">
+                    <span class="visually-hidden">正在加载...</span>
+                </div>
+                <p class="mt-2"><em>正在加载文章...</em></p>
+            </div>
+        }
+        else if (article == null)
+        {
+            <div class="alert alert-warning">
+                <i class="bi bi-exclamation-triangle"></i>
+                文章不存在或已被删除。
+                <a href="/articles" class="alert-link">返回文章列表</a>
+            </div>
+        }
+        else
+        {
+            <div class="card">
+                <div class="card-header">
+                    <h4>
+                        <i class="bi bi-pencil"></i>
+                        编辑文章
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <EditForm Model="@updateArticleDto" OnValidSubmit="@HandleValidSubmit" FormName="EditArticleForm">
+                        <DataAnnotationsValidator />
+                        <ValidationSummary class="alert alert-danger" />
+
+                        <div class="mb-3">
+                            <label for="title" class="form-label">标题 <span class="text-danger">*</span></label>
+                            <InputText id="title" class="form-control" @bind-Value="updateArticleDto.Title" placeholder="请输入文章标题" />
+                            <ValidationMessage For="@(() => updateArticleDto.Title)" class="text-danger" />
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="content" class="form-label">内容</label>
+                            <InputTextArea id="content" class="form-control" @bind-Value="updateArticleDto.Content" 
+                                         rows="10" placeholder="请输入文章内容..." />
+                            <ValidationMessage For="@(() => updateArticleDto.Content)" class="text-danger" />
+                            <div class="form-text">支持换行和基本格式。</div>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-secondary" @onclick="GoBack">
+                                <i class="bi bi-arrow-left"></i>
+                                返回列表
+                            </button>
+                            <button type="submit" class="btn btn-primary" disabled="@isSubmitting">
+                                @if (isSubmitting)
+                                {
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
+                                    <text>保存中</text>
+                                }
+                                else
+                                {
+                                    <i class="bi bi-save"></i>
+                                    <span>保存更改</span>
+                                }
+                            </button>
+                        </div>
+                    </EditForm>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@code {
+    [Parameter] public int Id { get; set; }
+    
+    private ArticleDto? article;
+    private UpdateArticleDto updateArticleDto = new();
+    private bool isLoading = true;
+    private bool isSubmitting = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await LoadArticle();
+    }
+
+    private async Task LoadArticle()
+    {
+        try
+        {
+            isLoading = true;
+            article = await ArticleService.GetArticleAsync(Id);
+            
+            if (article != null)
+            {
+                updateArticleDto.Title = article.Title;
+                updateArticleDto.Content = article.Content;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"加载文章时出错: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", "加载文章失败，请稍后重试。");
+        }
+        finally
+        {
+            isLoading = false;
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        try
+        {
+            isSubmitting = true;
+            var success = await ArticleService.UpdateArticleAsync(Id, updateArticleDto);
+            
+            if (success)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "文章更新成功！");
+                Navigation.NavigateTo("/articles");
+            }
+            else
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "更新失败，请稍后重试。");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"更新文章时出错: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", "更新失败，请稍后重试。");
+        }
+        finally
+        {
+            isSubmitting = false;
+        }
+    }
+
+    private void GoBack()
+    {
+        Navigation.NavigateTo("/articles");
+    }
+}
