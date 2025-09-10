@@ -17,22 +17,37 @@ namespace ArticleAPI.Services
         private readonly HttpClient _httpClient;
         private readonly ILogger<ArticleService> _logger;
         private readonly JsonSerializerOptions _jsonOptions;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public ArticleService(HttpClient httpClient, ILogger<ArticleService> logger)
+        public ArticleService(HttpClient httpClient, ILogger<ArticleService> logger, IHttpContextAccessor httpContextAccessor)
         {
             _httpClient = httpClient;
             _logger = logger;
+            _httpContextAccessor = httpContextAccessor;
             _jsonOptions = new JsonSerializerOptions
             {
                 PropertyNameCaseInsensitive = true
             };
         }
 
+        private string GetBaseUrl()
+        {
+            var context = _httpContextAccessor.HttpContext;
+            if (context != null)
+            {
+                var request = context.Request;
+                return $"{request.Scheme}://{request.Host}";
+            }
+            // fallback for when there's no HTTP context (shouldn't happen in web requests)
+            return "http://localhost:5000";
+        }
+
         public async Task<List<ArticleDto>> GetArticlesAsync()
         {
             try
             {
-                var response = await _httpClient.GetAsync("/api/articles");
+                var baseUrl = GetBaseUrl();
+                var response = await _httpClient.GetAsync($"{baseUrl}/api/articles");
                 
                 if (response.IsSuccessStatusCode)
                 {
@@ -57,7 +72,8 @@ namespace ArticleAPI.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"/api/articles/{id}");
+                var baseUrl = GetBaseUrl();
+                var response = await _httpClient.GetAsync($"{baseUrl}/api/articles/{id}");
                 
                 if (response.IsSuccessStatusCode)
                 {
@@ -84,7 +100,8 @@ namespace ArticleAPI.Services
                 var jsonContent = JsonSerializer.Serialize(createArticleDto);
                 var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
                 
-                var response = await _httpClient.PostAsync("/api/articles", content);
+                var baseUrl = GetBaseUrl();
+                var response = await _httpClient.PostAsync($"{baseUrl}/api/articles", content);
                 
                 if (response.IsSuccessStatusCode)
                 {
@@ -111,7 +128,8 @@ namespace ArticleAPI.Services
                 var jsonContent = JsonSerializer.Serialize(updateArticleDto);
                 var content = new StringContent(jsonContent, System.Text.Encoding.UTF8, "application/json");
                 
-                var response = await _httpClient.PutAsync($"/api/articles/{id}", content);
+                var baseUrl = GetBaseUrl();
+                var response = await _httpClient.PutAsync($"{baseUrl}/api/articles/{id}", content);
                 
                 if (response.IsSuccessStatusCode)
                 {
@@ -134,7 +152,8 @@ namespace ArticleAPI.Services
         {
             try
             {
-                var response = await _httpClient.DeleteAsync($"/api/articles/{id}");
+                var baseUrl = GetBaseUrl();
+                var response = await _httpClient.DeleteAsync($"{baseUrl}/api/articles/{id}");
                 
                 if (response.IsSuccessStatusCode)
                 {

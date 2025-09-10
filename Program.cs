@@ -16,14 +16,11 @@ builder.Services.AddServerSideBlazor();
 builder.Services.AddDbContext<ArticleDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
-// 配置HttpClient用于调用API
-builder.Services.AddHttpClient<ArticleService>(client =>
-{
-    var baseAddress = builder.Environment.IsDevelopment() 
-        ? "http://localhost:5000" 
-        : "http://localhost:80";
-    client.BaseAddress = new Uri(baseAddress);
-});
+// 添加 HttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+
+// 配置HttpClient用于调用API  
+builder.Services.AddHttpClient<ArticleService>();
 
 // 配置Swagger/OpenAPI
 builder.Services.AddEndpointsApiExplorer();
