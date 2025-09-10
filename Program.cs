@@ -26,7 +26,15 @@ builder.Services.AddHttpClient<ArticleService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
-    c.SwaggerDoc("v1", new() { Title = "Article API", Version = "v1" });
+    c.SwaggerDoc("v1", new() { 
+        Title = "文章管理系统 API", 
+        Version = "v1.0",
+        Description = "一个基于 ASP.NET Core 8 和 SQLite 的文章管理系统 API",
+        Contact = new() {
+            Name = "Morieity",
+            Email = "morieityqaq@gmail.com"
+        }
+    });
     
     // 启用XML注释
     var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -35,6 +43,9 @@ builder.Services.AddSwaggerGen(c =>
     {
         c.IncludeXmlComments(xmlPath);
     }
+    
+    // 为 Swagger UI 添加更多配置
+    c.DescribeAllParametersInCamelCase();
 });
 
 // 配置CORS（如果需要）
@@ -58,7 +69,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Article API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "文章管理系统 API V1");
         c.RoutePrefix = "swagger"; // 将Swagger UI移动到 /swagger 路径
     });
 }
@@ -66,6 +77,14 @@ else
 {
     app.UseExceptionHandler("/Error");
     app.UseHsts();
+    
+    // 在生产环境也启用 Swagger (可选 - 用于演示)
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "文章管理系统 API V1");
+        c.RoutePrefix = "swagger";
+    });
 }
 
 app.UseHttpsRedirection();
