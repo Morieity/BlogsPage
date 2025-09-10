@@ -1,0 +1,280 @@
+# .NET Core / ASP.NET Core
+bin/
+obj/
+out/
+*.dll
+*.exe
+*.pdb
+*.cache
+*.user
+*.suo
+*.tmp
+*.log
+
+# 发布目录 - 排除所有发布输出
+sqlite-release/
+final-release/
+server-deploy/
+publish/
+deploy/
+
+# SQLite 数据库文件
+*.db
+*.sqlite
+*.sqlite3
+app.db
+
+# Visual Studio / VS Code
+.vs/
+.vscode/
+*.sln.docstates
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pch
+*.vspscc
+*.vssscc
+.builds
+*.dotCover
+*.ncrunch*
+*.coverage
+*.coveragexml
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# NuGet 包文件夹
+packages/
+*.nupkg
+*.snupkg
+.nuget/
+
+# Node.js (如果使用前端构建工具)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 临时文件
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+
+# 操作系统生成的文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# 环境变量文件
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 日志文件
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Runtime data
+pids
+*.pid
+*.seed
+*.pid.lock
+
+# 依赖目录
+jspm_packages/
+
+# Optional npm cache directory
+.npm
+
+# Optional REPL history
+.node_repl_history
+
+# Output of 'npm pack'
+*.tgz
+
+# Yarn Integrity file
+.yarn-integrity
+
+# Webpack
+dist/
+build/
+
+# 编辑器备份文件
+*~
+*.bak
+*.orig
+
+# JetBrains Rider
+.idea/
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Webpack bundle analyzer
+report.html
+
+# 压缩文件 (通常是手动创建的部署包)
+*.zip
+*.rar
+*.tar.gz
+*.7z
+
+# 本地配置文件 (可能包含敏感信息)
+appsettings.local.json
+connectionstrings.json
+
+# 开发过程中的测试文件
+test-results/
+TestResults/
+
+# Bower dependency directory
+bower_components/
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# TeamCity
+_TeamCity*
+
+# DotCover
+*.dotCover
+
+# AxoCover
+.axoCover/*
+!.axoCover/settings.json
+
+# Coverlet
+coverage*.json
+coverage*.xml
+coverage*.info
+
+# Visual Studio profiler
+*.psess
+*.vsp
+*.vspx
+*.sap
+
+# Visual Studio Trace Files
+*.e2e
+
+# TFS 2012 Local Workspace
+$tf/
+
+# Guidance Automation Toolkit
+*.gpState
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# NCrunch
+_NCrunch_*
+.*crunch*.local.xml
+nCrunchTemp_*
+
+# MightyMoose
+*.mm.*
+AutoTest.Net/
+
+# Web workbench (sass)
+.sass-cache/
+
+# Installshield output folder
+[Ee]xpress/
+
+# DocProject
+DocProject/buildhelp/
+DocProject/Help/*.HxT
+DocProject/Help/*.HxC
+DocProject/Help/*.hhc
+DocProject/Help/*.hhk
+DocProject/Help/*.hhp
+DocProject/Help/Html2
+DocProject/Help/html
+
+# Click-Once directory
+publish/
+
+# Publish Web Output
+*.[Pp]ublish.xml
+*.azurePubxml
+*.pubxml
+*.publishproj
+
+# Microsoft Azure Web App publish settings
+PublishProfiles/
+
+# NuGet Packages
+*.nupkg
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+!**/[Pp]ackages/repositories.config
+
+# Windows Azure Build Output
+csx/
+*.build.csdef
+
+# Windows Store app package directory
+AppPackages/
+BundleArtifacts/
+
+# Visual Studio cache files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# User-specific files (MonoDevelop/Xamarin Studio)
+*.userprefs
+
+# Build results
+[Dd]ebug/
+[Dd]ebugPublic/
+[Rr]elease/
+[Rr]eleases/
+x64/
+x86/
+build/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# MSTest test Results
+[Tt]est[Rr]esult*/
+[Bb]uild[Ll]og.*
+
+# NUNIT
+*.VisualState.xml
+TestResult.xml
+
+# Build Results of an ATL Project
+[Dd]ebugPS/
+[Rr]eleasePS/
+dlldata.c
+
+# DNX
+project.lock.json
+artifacts/
+
+# 保留这些重要文件 (使用 ! 前缀表示不要忽略)
+!.gitignore
+!README.md
+!LICENSE
+!global.json
+!nuget.config
